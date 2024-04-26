@@ -5,7 +5,8 @@ import {
   LockIcon,
   MountainIcon,
   RocketIcon,
-  SparklesIcon,
+  Store,
+  User,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,7 +14,7 @@ import Link from "next/link";
 export default async function Home() {
   return (
     <>
-      <div className="flex flex-col min-h-[100]">
+      <main className="flex flex-col gap-12">
         <header className="px-4 border-b shadow lg:px-6 h-14 flex items-center justify-between">
           <Link className="flex items-center" href="#">
             <MountainIcon className="h-6 w-6" />
@@ -49,15 +50,15 @@ export default async function Home() {
             Menu
           </Button>
         </header>
-        <section className="w-full min-h-[94vh] pt-12 md:pt-24 bg-white dark:bg-gray-950">
+        <section className="w-full min-h-[94vh] pt-4 md:pt-24 bg-white dark:bg-gray-950">
           <div className="container px-4 md:px-6">
             <div className="grid gap-8 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-              <div className="flex flex-col justify-center space-y-4">
+              <div className="flex flex-col justify-start space-y-4">
                 <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter">
-                    La plataforma completa para gestionar tu negocio.
+                  <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+                    Merchminder
                   </h1>
-                  <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
+                  <p className="text-xl text-muted-foreground">
                     La plataforma para gestionar tu negocio de forma eficiente.
                     Deja que tu equipo se centre en la innovación y no en la
                     gestión de la infraestructura.
@@ -79,128 +80,53 @@ export default async function Home() {
             </div>
           </div>
         </section>
-        <section
-          className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800"
-          id="features"
-        >
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                  New Features
+        <section className="container flex flex-col justify-start w-full min-h-[50vh]">
+          <div className="flex w-full justify-center items-center flex-col gap-12">
+            <header className="flex flex-col gap-1 max-w-4xl text-center">
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+                Características
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Descubre las características que hacen de Merchminder la mejor
+              </p>
+            </header>
+            <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 max-w-screen-lg">
+              <article className="flex items-center justify-center flex-col gap-1">
+                <div className="flex flex-col items-center justify-center">
+                  <Store className="size-10 text-primary" />
+                  <h3 className="text-xl text-center font-bold">Gestion</h3>
                 </div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Faster iteration. More innovation.
-                </h2>
-                <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  The platform for rapid progress. Let your team focus on
-                  shipping features instead of managing infrastructure with
-                  automated CI/CD, built-in testing, and integrated
-                  collaboration.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-              <img
-                alt="Features"
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
-                height="310"
-                src="/placeholder.svg"
-                width="550"
-              />
-              <div className="flex flex-col justify-center space-y-4">
-                <ul className="grid gap-6">
-                  <li>
-                    <div className="grid gap-1">
-                      <h3 className="text-xl font-bold">Collaboration</h3>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        Make collaboration seamless with built-in code review
-                        tools.
-                      </p>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="grid gap-1">
-                      <h3 className="text-xl font-bold">Automation</h3>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        Automate your workflow with continuous integration.
-                      </p>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="grid gap-1">
-                      <h3 className="text-xl font-bold">Scale</h3>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        Deploy to the cloud with a single click and scale with
-                        ease.
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container grid items-center justify-center space-y-8 px-4 md:px-6">
-            <div className="space-y-2 text-center">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                What Our Customers Say
-              </h2>
-              <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Hear from the teams that love using our platform to build
-                amazing web experiences.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-              <div className="flex flex-col items-center gap-4">
-                <SparklesIcon className="h-10 w-10 text-primary" />
-                <h3 className="text-xl font-bold">Collaboration</h3>
                 <p className="text-center text-gray-500 dark:text-gray-400">
-                  Make collaboration seamless with built-in code review tools.
+                  Gestion de inventario, ventas y facturación.
                 </p>
-              </div>
-              <div className="flex flex-col items-center gap-4">
-                <BoldIcon className="h-10 w-10 text-primary" />
-                <h3 className="text-xl font-bold">Automation</h3>
+              </article>
+              <article className="flex items-center justify-center flex-col gap-1">
+                <div className="flex flex-col items-center justify-center">
+                  <User className="size-10 text-primary" />
+                  <h3 className="text-xl text-center font-bold">Clientes</h3>
+                </div>
                 <p className="text-center text-gray-500 dark:text-gray-400">
-                  Automate your workflow with continuous integration.
+                  Gestión de clientes y fidelización.
                 </p>
-              </div>
-              <div className="flex flex-col items-center gap-4">
-                <RocketIcon className="h-10 w-10 text-primary" />
-                <h3 className="text-xl font-bold">Scalability</h3>
+              </article>
+              <article className="flex items-center justify-center flex-col gap-1">
+                <div className="flex flex-col items-center justify-center">
+                  <RocketIcon className="size-10 text-primary" />
+                  <h3 className="text-xl text-center font-bold">Innovación</h3>
+                </div>
                 <p className="text-center text-gray-500 dark:text-gray-400">
-                  Deploy to the cloud with a single click and scale with ease.
+                  Innovación y desarrollo de productos.
                 </p>
-              </div>
-              <div className="flex flex-col items-center gap-4">
-                <LockIcon className="h-10 w-10 text-primary" />
-                <h3 className="text-xl font-bold">Security</h3>
+              </article>
+              <article className="flex items-center justify-center flex-col gap-1">
+                <div className="flex flex-col items-center justify-center">
+                  <LockIcon className="size-10 text-primary" />
+                  <h3 className="text-xl text-center font-bold">Seguridad</h3>
+                </div>
                 <p className="text-center text-gray-500 dark:text-gray-400">
-                  Secure your applications with built-in security features.
+                  Seguridad y protección de datos.
                 </p>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section
-          className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800"
-          id="cta"
-        >
-          <div className="container grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-                Experience the workflow the best frontend teams love.
-              </h2>
-              <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Let your team focus on shipping features instead of managing
-                infrastructure with automated CI/CD.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 min-[400px]:flex-row lg:justify-end">
-              <Button variant="default">Contact Sales</Button>
-              <Button variant="secondary">Learn more</Button>
+              </article>
             </div>
           </div>
         </section>
@@ -223,7 +149,7 @@ export default async function Home() {
             </Link>
           </nav>
         </footer>
-      </div>
+      </main>
     </>
   );
 }
