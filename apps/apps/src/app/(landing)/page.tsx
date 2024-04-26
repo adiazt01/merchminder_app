@@ -1,4 +1,4 @@
-
+import { Dashboard } from "@/assets";
 import { Button } from "@/components/ui/button";
 import {
   BoldIcon,
@@ -7,13 +7,14 @@ import {
   RocketIcon,
   SparklesIcon,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
   return (
     <>
-      <div key="1" className="flex flex-col min-h-[100dvh]">
-        <header className="px-4 lg:px-6 h-14 flex items-center justify-between">
+      <div className="flex flex-col min-h-[100]">
+        <header className="px-4 border-b shadow lg:px-6 h-14 flex items-center justify-between">
           <Link className="flex items-center" href="#">
             <MountainIcon className="h-6 w-6" />
             <span className="sr-only">Acme Inc</span>
@@ -48,34 +49,32 @@ export default async function Home() {
             Menu
           </Button>
         </header>
-        <section
-          className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gray-100 dark:bg-gray-950"
-          id="hero"
-        >
+        <section className="w-full min-h-[94vh] pt-12 md:pt-24 bg-white dark:bg-gray-950">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+            <div className="grid gap-8 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                    The complete platform for building the Web
+                  <h1 className="text-3xl font-bold tracking-tighter">
+                    La plataforma completa para gestionar tu negocio.
                   </h1>
                   <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                    Give your team the toolkit to stop configuring and start
-                    innovating. Securely build, deploy, and scale the best web
-                    experiences.
+                    La plataforma para gestionar tu negocio de forma eficiente.
+                    Deja que tu equipo se centre en la innovación y no en la
+                    gestión de la infraestructura.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button variant="default">Get Started</Button>
-                  <Button variant="secondary">Contact Sales</Button>
+                  <Button variant="default">Comenzar</Button>
+                  <Button variant="secondary">Más información</Button>
                 </div>
               </div>
-              <img
+              <Image
+                quality={100}
+                className="rounded-xl border shadow-lg"
                 alt="Hero"
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-                height="550"
-                src="/placeholder.svg"
-                width="550"
+                height="1440"
+                src={Dashboard}
+                width="1920"
               />
             </div>
           </div>
