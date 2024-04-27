@@ -1,14 +1,5 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { CircleUser, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { SidebarMobile } from "@/components/sidebar/SidebarMobile";
 import { AccountDropdown } from "../dropdown/AccountDropdown";
 

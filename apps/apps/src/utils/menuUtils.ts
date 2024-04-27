@@ -1,4 +1,4 @@
-import { Home, Package, CreditCard, User } from "lucide-react";
+import { Home, Package, CreditCard, User, Book } from "lucide-react";
 
 export const MENU_DASHBOARD = [
   {
@@ -21,4 +21,17 @@ export const MENU_DASHBOARD = [
     icon: User,
     href: "/dashboard/clients",
   },
+];
+
+export const MENU_LANDING = [
+  {
+    name: "Inicio",
+    icon: Home,
+    href: "/",
+  },
+  {
+    name: "Documentacion",
+    icon: Book,
+    href: "/documentation",
+  }
 ];

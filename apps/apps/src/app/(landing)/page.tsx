@@ -1,9 +1,8 @@
 import { Dashboard } from "@/assets";
+import { NavbarLanding } from "@/components/navbar/NavbarLading";
 import { Button } from "@/components/ui/button";
 import {
-  BoldIcon,
   LockIcon,
-  MountainIcon,
   RocketIcon,
   Store,
   User,
@@ -15,41 +14,7 @@ export default async function Home() {
   return (
     <>
       <main className="flex flex-col gap-12">
-        <header className="px-4 border-b shadow lg:px-6 h-14 flex items-center justify-between">
-          <Link className="flex items-center" href="#">
-            <MountainIcon className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
-          </Link>
-          <nav className="hidden lg:flex gap-4 sm:gap-6">
-            <Link
-              className="text-sm font-medium hover:underline underline-offset-4"
-              href="#"
-            >
-              Hero
-            </Link>
-            <Link
-              className="text-sm font-medium hover:underline underline-offset-4"
-              href="#"
-            >
-              Features
-            </Link>
-            <Link
-              className="text-sm font-medium hover:underline underline-offset-4"
-              href="#"
-            >
-              Testimonials
-            </Link>
-            <Link
-              className="text-sm font-medium hover:underline underline-offset-4"
-              href="#"
-            >
-              CTA
-            </Link>
-          </nav>
-          <Button className="ml-auto lg:hidden" variant="default">
-            Menu
-          </Button>
-        </header>
+        <NavbarLanding />
         <section className="w-full min-h-[94vh] pt-4 md:pt-24 bg-white dark:bg-gray-950">
           <div className="container px-4 md:px-6">
             <div className="grid gap-8 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
