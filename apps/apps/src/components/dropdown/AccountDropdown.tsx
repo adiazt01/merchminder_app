@@ -1,16 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { CircleUser, Loader, LogOut } from "lucide-react";
+import { Loader } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
+
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { auth } from "@/utils/auth";
-import { LogoutDropdownMenuItem } from "../buttons/LogoutDropdownMenuItem";
+import { AccountDropdownMenuOptions } from "./options/AccountDropwdonMenuOptions";
 
 export async function AccountDropdown() {
   const session = await auth();
@@ -31,13 +28,9 @@ export async function AccountDropdown() {
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>
-          {session?.user.name}
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <LogoutDropdownMenuItem />
-      </DropdownMenuContent>
+      <AccountDropdownMenuOptions session={session} />
     </DropdownMenu>
   );
 }
+
+

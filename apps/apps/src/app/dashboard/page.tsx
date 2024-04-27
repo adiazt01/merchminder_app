@@ -37,7 +37,7 @@ export default async function DashboardPage() {
           </Suspense>
         </div>
         <div className="flex flex-col md:flex-row gap-4 flex-1">
-<CardWithBarChartToShowSalesThisYear/>
+          <CardWithBarChartToShowSalesThisYear />
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Hola {session?.user.name}!</CardTitle>
