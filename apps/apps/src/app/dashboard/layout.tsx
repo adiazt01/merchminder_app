@@ -20,12 +20,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-          <SidebarDashboard />
-          <div className="flex overflow-hidden flex-col">
+        <div className="grid grid-cols-1 md:grid-cols-4">
+          <div className="col-span-1">
+            <SidebarDashboard />
+          </div>
+          <div className="col-span-3 relative">
             <NavbarDashboard />
             {children}
-            <Toaster />
           </div>
         </div>
       </body>
