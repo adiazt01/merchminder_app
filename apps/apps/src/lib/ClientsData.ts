@@ -14,3 +14,17 @@ export const getAllClients = async () => {
     throw new Error("Error fetching clients");
   }
 };
+
+export const getClient = async (id: string) => {
+  const userId = await getUserId();
+  try {
+    return await prisma.client.findUnique({
+      where: {
+        id: parseInt(id),
+        userId,
+      },
+    });
+  } catch (error) {
+    throw new Error("Error fetching client");
+  }
+};

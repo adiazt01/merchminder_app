@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, LoaderCircle, Plus } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
@@ -29,14 +29,18 @@ import {
 import { z } from "zod";
 import { createClientFormSchema } from "@/schemas/clientSchema";
 import { createClient } from "@/actions/clientActions";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function CreateClientPage() {
+  const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<z.infer<typeof createClientFormSchema>>({
     resolver: zodResolver(createClientFormSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
+      name: undefined,
+      email: undefined,
+      phone: undefined,
     },
   });
 
@@ -53,6 +57,20 @@ export default function CreateClientPage() {
     }
 
     const res = await createClient(formValues);
+
+    if (res) {
+      toast({
+        title: "Cliente creado",
+        description: "El cliente ha sido creado exitosamente.",
+      });
+      form.reset();
+      router.push("/dashboard/clients");
+    } else {
+      toast({
+        title: "Error",
+        description: "Hubo un error al crear el cliente.",
+      });
+    }
   }
 
   return (
@@ -64,7 +82,7 @@ export default function CreateClientPage() {
             size="icon"
             asChild
           >
-            <Link href="/dashboard/products">
+            <Link href="/dashboard/clients">
               <ArrowLeft className="w-5 h-5" />
             </Link>
           </Button>
@@ -72,7 +90,7 @@ export default function CreateClientPage() {
         </h1>
       </div>
       <section className="flex w-full h-full">
-        <Card>
+        <Card className="w-full">
           <CardHeader>
             <CardTitle>Nuevo cliente</CardTitle>
             <CardDescription>
@@ -81,7 +99,7 @@ export default function CreateClientPage() {
           </CardHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <CardContent>
+              <CardContent className="flex flex-col gap-4">
                 <FormField
                   control={form.control}
                   name="name"
@@ -101,6 +119,7 @@ export default function CreateClientPage() {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="email"
@@ -143,8 +162,25 @@ export default function CreateClientPage() {
                   )}
                 />
               </CardContent>
-              <CardFooter>
-                <Button type="submit">Agendar cliente</Button>
+              <CardFooter className="flex flex-row justify-end">
+                <Button
+                  disabled={
+                    !form.formState.isValid || form.formState.isSubmitting
+                  }
+                  type="submit"
+                >
+                  {form.formState.isSubmitting ? (
+                    <span className="flex flex-row gap-2 items-center">
+                      <LoaderCircle className="w-6 h-6 animate-spin" />
+                      Creando cliente...
+                    </span>
+                  ) : (
+                    <span className="flex flex-row gap-2 items-center">
+                      <Plus className="w-6 h-6" />
+                      Crear cliente
+                    </span>
+                  )}
+                </Button>
               </CardFooter>
             </form>
           </Form>

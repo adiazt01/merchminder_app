@@ -3,8 +3,7 @@
 import { CreateSaleSchemaForm } from "@/schemas/sellSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Client, Product } from "@prisma/client";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -21,80 +20,151 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectGroup,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
-import Link from "next/link";
 import { createSell } from "@/actions/salesActions";
+import { useToast } from "@/components/ui/use-toast";
+import { Loader } from "lucide-react";
+import { useState } from "react";
 
 interface CreateSellFormProps {
   dataProducts: Product[];
   clientsData: Client[];
 }
 
+/**
+ * CreateSellForm component
+ *
+ * This component renders a form to create a new sell. It uses the CreateSaleSchemaForm schema to validate the form.
+ *
+ * @component
+ *
+ * @example
+ * return (
+ *   <CreateSellForm dataProducts={products} clientsData={clients} />
+ * )
+ *
+ * @param {Product[]} dataProducts The list of products to show in the form.
+ * @param {Client[]} clientsData The list of clients to show in the form.
+ */
 export function CreateSellForm({
   dataProducts,
   clientsData,
 }: CreateSellFormProps) {
+  const { toast } = useToast();
+
+  // Create the form
   const form = useForm<z.infer<typeof CreateSaleSchemaForm>>({
     resolver: zodResolver(CreateSaleSchemaForm),
     defaultValues: {
-      clientId: "",
-      products: [{ productId: "", quantity: "" }],
+      clientId: undefined,
+      products: undefined,
     },
   });
 
-  const [globalSelectedProducts, setGlobalSelectedProducts] = useState([]);
-  const [localSelectedProducts, setLocalSelectedProducts] = useState([[]]);
+  // Use the hook to manage the products array
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "products",
+  });
 
-  const [products, setProducts] = useState([
-    { productId: "", quantity: "", salePrice: "" },
-  ]);
-
-  const addProduct = () => {
-    setProducts([...products, { productId: "", quantity: "", salePrice: "" }]);
-  };
-
-  const removeProduct = (index: number) => {
-    setSalePrice((prev) => {
-      const product = dataProducts.find(
-        (product) => product.id.toString() === products[index].productId
-      );
-      return prev - product.price;
-    });
-
-    const newProducts = [...products];
-    newProducts.splice(index, 1);
-    setProducts(newProducts);
-
-    const newGlobalSelectedProducts = [...globalSelectedProducts];
-    newGlobalSelectedProducts.splice(index, 1);
-    setGlobalSelectedProducts(newGlobalSelectedProducts);
-
-    const newLocalSelectedProducts = [...localSelectedProducts];
-    newLocalSelectedProducts.splice(index, 1);
-    setLocalSelectedProducts(newLocalSelectedProducts);
-  };
-
+  // Function to handle the form submit
   async function onSubmit(values: z.infer<typeof CreateSaleSchemaForm>) {
+    // Map the products to the correct types
     const products = values.products.map((product) => ({
       ...product,
       productId: Number(product.productId),
       quantity: Number(product.quantity),
     }));
 
+    // Create the form data
     const formData = new FormData();
-
     formData.append("clientId", values.clientId);
+    if (products.length === 0) {
+      form.setError("products", {
+        message: "Debes añadir al menos un producto",
+      });
+      return;
+    }
     formData.append("products", JSON.stringify(products));
 
     const res = await createSell(formData);
+
+    if (res.error) {
+      form.setError("root", { message: res.message });
+      toast({
+        title: "Error al registrar la venta",
+        description: "Ha ocurrido un error al registrar la venta.",
+      });
+    } else {
+      toast({
+        title: "Venta registrada",
+        description: "La venta ha sido registrada con éxito.",
+      });
+    }
   }
+
+  const [selectedProducts, setSelectedProducts] = useState([]);
+
+  function handleOnChangeSelectProduct({
+    value,
+    field,
+    index,
+  }: {
+    value: string;
+    field: any;
+    index: number;
+  }) {
+    const product = dataProducts.find(
+      (product) => product.id === Number(value)
+    );
+
+    if (product) {
+      field.onChange(value);
+      setSelectedProducts((prev) => {
+        const newProducts = [...prev];
+        newProducts[index] = { product, quantity: 1 };
+        return newProducts;
+      });
+    }
+  }
+
+  function handleOnChangeQuantity({
+    value,
+    index,
+    field,
+  }: {
+    value: string;
+    index: number;
+    field: any;
+  }) {
+    field.onChange(value);
+    setSelectedProducts((prev) => {
+      const newProducts = [...prev];
+      console.log(newProducts);
+      newProducts[index].quantity = Number(value);
+      console.log(newProducts);
+      return newProducts;
+    });
+  }
+
+  const totalPrice = selectedProducts.reduce(
+    (total, { product, quantity }) => total + product.price * quantity,
+    0
+  );
+
+  console.log(selectedProducts);
+  console.log(totalPrice);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="grid grid-cols-1 gap-4"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
           name="clientId"
@@ -104,7 +174,7 @@ export function CreateSellForm({
               <Select onValueChange={(value) => field.onChange(value)}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a client" />
+                    <SelectValue placeholder="Juan..." />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -116,110 +186,113 @@ export function CreateSellForm({
                 </SelectContent>
               </Select>
               <FormDescription>
-                Select a client to associate with the sale.
+                Selecciona un cliente para la venta.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        {products &&
-          products.map((product, index) => (
-            <div key={index}>
-              <FormField
-                control={form.control}
-                name={`products[${index}].productId`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <Select
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        const newGlobalSelectedProducts = [
-                          ...globalSelectedProducts,
-                          value,
-                        ];
-
-                        const newLocalSelectedProducts = [
-                          ...localSelectedProducts,
-                        ];
-                        if (!newLocalSelectedProducts[index]) {
-                          newLocalSelectedProducts[index] = [];
-                        }
-                        newLocalSelectedProducts[index] = [
-                          ...newLocalSelectedProducts[index],
-                          value,
-                        ];
-                        setGlobalSelectedProducts(newGlobalSelectedProducts);
-                        setLocalSelectedProducts(newLocalSelectedProducts);
-                      }}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a verified email to display" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {dataProducts
-                          .filter(
-                            (product) =>
-                              !globalSelectedProducts.includes(
-                                product.id.toString()
-                              ) ||
-                              localSelectedProducts[index]?.includes(
-                                product.id.toString()
-                              )
-                          )
-                          .map((product) => (
-                            <SelectItem
-                              key={product.id}
-                              value={product.id.toString()}
-                            >
-                              {product.name}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      You can manage email addresses in your{" "}
-                      <Link href="/examples/forms">email settings</Link>.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name={`products[${index}].quantity`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Quantity</FormLabel>
+        {fields.map((item, index) => (
+          <div
+            className="flex flex-row flex-wrap items-end gap-6"
+            key={item.id}
+          >
+            <FormField
+              control={form.control}
+              name={`products.${index}.productId` as const}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Producto</FormLabel>
+                  <Select
+                    onValueChange={(value) =>
+                      handleOnChangeSelectProduct({ value, field, index })
+                    }
+                  >
                     <FormControl>
-                      <Input
-                        placeholder="Quantity"
-                        value={field.value || ""}
-                        {...field}
-                      />
+                      <SelectTrigger>
+                        <SelectValue placeholder="Producto..." />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormDescription>
-                      Enter the quantity of the product.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <button type="button" onClick={() => removeProduct(index)}>
-                Remove Product
-              </button>
-            </div>
-          ))}
+                    <SelectContent>
+                      {dataProducts.map((product) => (
+                        <SelectItem
+                          key={product.id}
+                          value={product.id.toString()}
+                        >
+                          {product.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
 
-        <button type="button" onClick={addProduct}>
-          Add Product
-        </button>
+            <FormField
+              control={form.control}
+              name={`products.${index}.quantity` as const}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cantidad</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="1"
+                      onChange={(event) =>
+                        handleOnChangeQuantity({
+                          value: event.target.value,
+                          index,
+                          field,
+                        })
+                      }
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <button type="submit">Submit</button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => remove(index)}
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+
+        <div className="flex justify-start gap-4">
+          <Button
+            type="button"
+            size="sm"
+            onClick={() =>
+              append({ productId: undefined, quantity: undefined })
+            }
+          >
+            Add product
+          </Button>
+        </div>
+
+        {form.formState.errors.root && (
+          <FormMessage>{form.formState.errors.root.message}</FormMessage>
+        )}
+        <div className="flex justify-end gap-4">
+          <Button
+            disabled={form.formState.isSubmitting || totalPrice === 0}
+            type="submit"
+          >
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader className="size-6 mr-2" />
+                <span>Registrando venta...</span>
+              </>
+            ) : (
+              <span>Registrar venta por ${totalPrice}</span>
+            )}
+          </Button>
+        </div>
       </form>
     </Form>
   );

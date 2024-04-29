@@ -2,11 +2,17 @@ import { z } from "zod";
 
 export const CreateSaleSchemaForm = z.object({
   /*     userId: z.string(), */
-  clientId: z.string(),
+  clientId: z.string({
+    required_error: "El cliente es requerido",
+  }),
   products: z.array(
     z.object({
-      productId: z.string(),
-      quantity: z.string(),
+      productId: z.string({
+        required_error: "El roducto es requerido",
+      }),
+      quantity: z.string({
+        required_error: "La cantidad es requerida",
+      }),
     })
   ),
 });

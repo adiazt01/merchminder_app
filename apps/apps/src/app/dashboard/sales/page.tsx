@@ -12,15 +12,15 @@ import { Suspense } from "react";
 
 /**
  * SalesPage component
- * 
+ *
  * This component renders the sales of the application.
- * 
+ *
  * It includes:
  * - A header with the page title and a button to register a new sale
- * - Two cards with the sales of the week and the month 
+ * - Two cards with the sales of the week and the month
  * - A table with all the sales
  * - A card with the details of the selected sale
-*/
+ */
 export default async function SalesPage() {
   return (
     <SalesProvider>

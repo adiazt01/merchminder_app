@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 interface FormState {
   message?: string;
   data?: Sale | null;
-  error?: Error | null;
+  error?: boolean;
 }
 
 export async function createSell(
@@ -26,7 +26,7 @@ export async function createSell(
 
   for (const product of products) {
     if (!product.productId || !product.quantity) {
-      return { message: "All products must have a quantity" };
+      return { message: "All products must have a quantity", error: true, data: null};
     }
   }
 
@@ -41,7 +41,7 @@ export async function createSell(
   });
 
   if (searchProducts.length !== productIds.length) {
-    return { message: "Some products were not found" };
+    return { message: "Some products were not found", error: true, data: null};
   }
 
   const saleItems = products.map((product) => {
@@ -79,12 +79,12 @@ export async function createSell(
     });
 
     revalidatePath("/dashboard/sales");
-    return { data: newSale, message: "Sale created successfully", error: null };
+    return  { message: "Sale created successfully", error: false, data: newSale };
   } catch (error) {
     if (error instanceof Error) {
-      return { message: "An error occurred while creating the sale", error };
+      return { message: "An error occurred while creating the sale", error: true, data: null };
     } else {
-      return { message: "An error occurred while creating the sale" };
+      return { message: "An error occurred while creating the sale", error: true, data: null };
     }
   }
 }
@@ -98,13 +98,12 @@ export async function deleteSellAction(saleId: number): Promise<FormState> {
     });
 
     revalidatePath("/dashboard/sales");
-    
-    return { message: "Sale deleted successfully", error: null };
+    return { message: "Sale deleted successfully", error: false, data: null };
   } catch (error) {
     if (error instanceof Error) {
-      return { message: "An error occurred while deleting the sale", error };
+      return { message: "An error occurred while deleting the sale", error: true, data: null };
     } else {
-      return { message: "An error occurred while deleting the sale" };
+      return { message: "An error occurred while deleting the sale", error: true, data: null };
     }
   }
 }

@@ -1,21 +1,16 @@
-import { CreateSellForm } from "@/components/forms/CreateSellForm";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getAllClients } from "@/lib/ClientsData";
-import { getAllProducts } from "@/lib/ProductsData";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default async function CreateSellPage() {
-  const products = await getAllProducts();
-  const clients = await getAllClients();
-
+export default function Loading() {
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex flex-row justify-between items-center">
@@ -25,24 +20,27 @@ export default async function CreateSellPage() {
             size="icon"
             asChild
           >
-            <Link href="/dashboard/sales">
+            <Link href="/dashboard/products">
               <ArrowLeft className="w-5 h-5" />
             </Link>
           </Button>
-          Registrar venta
+          Actualizar producto
         </h1>
       </div>
-      <section className="flex flex-col w-full h-full">
+      <section className="flex w-full h-full">
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>Registrar venta</CardTitle>
+            <CardTitle>Actualizar cliente</CardTitle>
             <CardDescription>
-              Llene los campos para registrar una venta.
+              Actualiza la información de tu cliente.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <CreateSellForm dataProducts={products} clientsData={clients} />
+            <div className="w-full rounded-md h-[250px] bg-gray-200 animate-pulse" />
           </CardContent>
+          <CardFooter className="flex flex-row justify-end">
+            <div className="w-56 mt-4 rounded-md h-10 py-1 bg-gray-200 animate-pulse" />
+          </CardFooter>
         </Card>
       </section>
     </main>
