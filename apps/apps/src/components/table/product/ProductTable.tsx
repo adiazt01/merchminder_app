@@ -54,7 +54,7 @@ export function ProductDataTable<TData, TValue>({
   });
 
   return (
-    <div className="flex p-2.5 w-full h-full overflow-x-hidden gap-4 flex-col">
+    <div className="flex w-full h-full overflow-x-hidden gap-4 flex-col">
       <div className="flex items-center">
         <div className="relative">
           <Label htmlFor="search">Buscar productos</Label>

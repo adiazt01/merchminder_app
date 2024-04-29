@@ -79,6 +79,7 @@ const ActionCell = ({ sale }:{
           </DropdownMenuItem>
           <DialogTrigger asChild>
             <DropdownMenuItem>
+              <Trash className="h-4 w-4 mr-2" />
               <span>Delete</span>
             </DropdownMenuItem>
           </DialogTrigger>
@@ -115,7 +116,7 @@ export const columns: ColumnDef<Sale>[] = [
           className="w-full"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Price
+          Precio
           {
             <ArrowUp
               className={`ml-2 h-4 w-4 ${
@@ -145,7 +146,7 @@ export const columns: ColumnDef<Sale>[] = [
           className="w-full"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date
+          Fecha
           {
             <ArrowUp
               className={`ml-2 h-4 w-4 ${
@@ -167,7 +168,7 @@ export const columns: ColumnDef<Sale>[] = [
   },
   {
     id: "actions",
-    header: () => <h3 className="w-full text-center">Actions</h3>,
+    header: () => <h3 className="w-full text-center">Acciones</h3>,
     cell: ({ row }) => {
       const sale = row.original as SaleWithDetails;
       return (

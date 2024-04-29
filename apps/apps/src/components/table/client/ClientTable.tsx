@@ -23,6 +23,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -52,16 +54,23 @@ export function ClientDataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full overflow-hidden h-full">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Busca un cliente por nombre"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+    <div className="flex w-full h-full overflow-x-hidden gap-4 flex-col">
+      <div className="flex items-center">
+        <div className="relative">
+          <Label htmlFor="search">Buscar cliente</Label>
+          <Search className="absolute left-2.5 bottom-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            id="search"
+            name="search"
+            placeholder="Search products..."
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+            className="w-full appearance-none bg-background pl-8 shadow-none "
+          />
+        </div>
       </div>
       <div className="rounded-md overflow-x-auto border">
         <Table>
