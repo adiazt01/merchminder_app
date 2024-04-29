@@ -35,3 +35,5 @@ export const MENU_LANDING = [
     href: "/documentation",
   }
 ];
+
+export const LINK_DOCUMENTATION = "https://merchminder-app-docs.vercel.app/"
