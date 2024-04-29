@@ -63,7 +63,7 @@ export function DropdownClientTable({ client }: { client: Client }) {
           <Separator />
           <DropdownMenuItem
             onClick={() => {
-              router.push(`/dashboard/client/update/${id}`);
+              router.push(`/dashboard/clients/update/${id}`);
             }}
           >
             <Pencil className="h-4 w-4 mr-2" />
@@ -72,7 +72,7 @@ export function DropdownClientTable({ client }: { client: Client }) {
           <DialogTrigger asChild>
             <DropdownMenuItem>
               <Trash className="h-4 w-4 mr-2" />
-              <span>Delete</span>
+              <span>Eliminar</span>
             </DropdownMenuItem>
           </DialogTrigger>
         </DropdownMenuContent>

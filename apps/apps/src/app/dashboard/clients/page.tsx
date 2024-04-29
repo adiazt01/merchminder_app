@@ -18,7 +18,9 @@ export default async function ClientsPage() {
         <Button size="sm" asChild>
           <Link href="/dashboard/clients/create">
             <Plus className="w-6 h-6 md:mr-2" />
-            <span className="hidden md:inline">Create Client</span>
+            <span className="hidden md:inline">
+              Crear cliente
+            </span>
           </Link>
         </Button>
       </div>

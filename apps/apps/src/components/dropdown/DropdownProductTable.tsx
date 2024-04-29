@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { deleteProduct } from "@/actions/productsActions";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
 
 export function DropwdownProductTable({ product }: { product: Product }) {
   const router = useRouter();
@@ -37,7 +37,7 @@ export function DropwdownProductTable({ product }: { product: Product }) {
       toast({
         title: "El producto no pudo ser eliminado",
         description: "Por favor intenta de nuevo",
-      }) 
+      });
     } else {
       toast({
         title: "Producto eliminado",
@@ -62,9 +62,7 @@ export function DropwdownProductTable({ product }: { product: Product }) {
           </DropdownMenuLabel>
           <Separator />
           <DropdownMenuItem
-            onClick={() => {
-              router.push(`/dashboard/products/update/${id}`);
-            }}
+            onClick={() => router.push(`/dashboard/products/update/${id}`)}
           >
             <Pencil className="h-4 w-4 mr-2" />
             <span>Editar</span>
@@ -72,7 +70,7 @@ export function DropwdownProductTable({ product }: { product: Product }) {
           <DialogTrigger asChild>
             <DropdownMenuItem>
               <Trash className="h-4 w-4 mr-2" />
-              <span>Delete</span>
+              <span>Eliminar</span>
             </DropdownMenuItem>
           </DialogTrigger>
         </DropdownMenuContent>
