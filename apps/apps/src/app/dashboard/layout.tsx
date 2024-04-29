@@ -27,6 +27,7 @@ export default function RootLayout({
           <div className="col-span-3 relative">
             <NavbarDashboard />
             {children}
+            <Toaster />
           </div>
         </div>
       </body>

@@ -14,8 +14,7 @@ export default async function Home() {
   return (
     <>
       <main className="flex flex-col gap-12">
-        <NavbarLanding />
-        <section className="w-full min-h-[94vh] pt-4 md:pt-24 bg-white dark:bg-gray-950">
+        <section className="w-full min-h-[100vh] pt-4 md:pt-24 lg:pt-36 bg-white dark:bg-gray-950">
           <div className="container px-4 md:px-6">
             <div className="grid gap-8 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-start space-y-4">
