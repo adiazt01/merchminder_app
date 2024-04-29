@@ -11,13 +11,27 @@ import { Separator } from "@/components/ui/separator";
 import { SalesContext } from "@/context/SalesContext";
 import { useContext } from "react";
 
-
+/**
+ * BigSalesCard component
+ *
+ * This component renders the details of the selected sale.This need use the SalesContext to get the selected sale. Besides it is sticky with respect to the viewport.
+ *
+ * @component
+ *
+ * @example
+ * return (
+ * <SalesContext.Provider value={{ selectedSale: mySale }}>
+ *     <BigSalesCard />
+ *   </SalesContext.Provider>
+ * )
+ */
 export function BigSalesCard() {
   const { selectedSale } = useContext(SalesContext);
 
+  // If there is no selected sale, show a message
   if (!selectedSale) {
     return (
-      <Card className="w-full order-first md:order-last">
+      <Card className="sticky flex-1 top-20 flex flex-col  order-first md:order-last">
         <CardHeader>
           <CardTitle className="text-xl">No hay venta seleccionada</CardTitle>
           <CardDescription>
@@ -29,14 +43,9 @@ export function BigSalesCard() {
     );
   }
 
-  const {
-    saleTotal,
-    createdAt,
-    id,
-    saleItems,
-    client
-  } = selectedSale;
+  const { saleTotal, createdAt, id, saleItems, client } = selectedSale;
 
+  // Calculate the total price of the sale items
   const totalProductsSellsWithTotalPrice = saleItems.map((item) => {
     return {
       ...item,
@@ -44,9 +53,8 @@ export function BigSalesCard() {
     };
   });
 
-
   return (
-    <Card className="sticky flex-1 top-10 flex flex-col  order-first md:order-last">
+    <Card className="sticky flex-1 top-20 flex flex-col  order-first md:order-last">
       <CardHeader className="bg-gray-50 border-b py-4">
         <CardTitle className="text-xl">
           Venta # {id}
@@ -66,11 +74,12 @@ export function BigSalesCard() {
             Productos vendidos
           </h3>
           <div className="flex flex-col">
-            {totalProductsSellsWithTotalPrice.map(productSell => (
+            {totalProductsSellsWithTotalPrice.map((productSell) => (
               <div
                 key={productSell.productId}
                 className="flex flex-row justify-between w-full"
               >
+                {/* For manage the product name if the product was deleted */}
                 <span className="font-medium text-md text-neutral-600">
                   {productSell?.product?.name &&
                     `${productSell.product.name} ${productSell.quantity}x`}
