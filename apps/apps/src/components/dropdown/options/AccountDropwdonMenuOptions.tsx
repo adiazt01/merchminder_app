@@ -7,8 +7,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { LINK_DOCUMENTATION } from "@/utils/menuUtils";
 import { Book, LayoutDashboard } from "lucide-react";
 import { Session } from "next-auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export function AccountDropdownMenuOptions({
@@ -26,10 +28,11 @@ export function AccountDropdownMenuOptions({
         <LayoutDashboard className="w-4 h-4 mr-2" />
         <span>Dashboard</span>
       </DropdownMenuItem>
-      {/* TODO add documentation link */}
       <DropdownMenuItem>
-        <Book className="w-4 h-4 mr-2" />
-        <span>Documentacion</span>
+        <Link className="flex flex-row" href={LINK_DOCUMENTATION} target="_blank">
+          <Book className="w-4 h-4 mr-2" />
+          <span>Documentacion</span>
+        </Link>
       </DropdownMenuItem>
       <LogoutDropdownMenuItem />
     </DropdownMenuContent>
